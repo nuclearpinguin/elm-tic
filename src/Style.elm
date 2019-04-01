@@ -1,6 +1,7 @@
-module Style exposing (..)
-import Html exposing (Attribute)
-import Html.Attributes exposing (style)
+module Style            exposing (..)
+
+import Html             exposing (Attribute)
+import Html.Attributes  exposing (style)
 
 
 boardStyle : List (Attribute a)
