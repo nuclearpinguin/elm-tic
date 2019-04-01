@@ -180,7 +180,7 @@ checkIfMarked : Mark -> GameState -> List (Attribute Model)
 checkIfMarked m s =
     let
         stl = if (m == Empty) 
-            then [style "background-color" "#ffdb4d"] 
+            then [style "background-color" "#9ACD32"] 
             else [attribute "disabled" ""]
     in
     case s of
@@ -204,7 +204,20 @@ isGameActive s =
         On -> [style "display" "none"]
         _ -> [style "display" "block"]
             
+
+showGameButtons : GameState -> List (Attribute a)
+showGameButtons s =
+    case s of
+        NewGame -> [style "display" "inline"]
+        _ -> [style "display" "none"]
                             
+
+showNewGameButtons : GameState -> List (Attribute a)
+showNewGameButtons s =
+    case s of
+        NewGame -> [style "display" "none"]
+        _ -> [style "display" "inline"]
+
 -- VIEW
 
 view : Game -> Html Model
@@ -219,13 +232,20 @@ view game =
     div []
         [ div (Style.overlay ++ isGameActive state)
             [ p [] [text gameStatus]
-            , button 
-                [ style "font-size" "12pt" 
-                , onClick ( {gameType = PlayerPlayer,  action = None} )] [text "Player vs. Player"]
-            , button 
-                [ style "font-size" "12pt" 
-                , style "margin-left" "50px" 
-                , onClick ( {gameType = PlayerComputer,  action = None})] [text "Player vs. Computer"]
+            , div (showGameButtons state) 
+                [ button 
+                    [ style "font-size" "12pt" 
+                    , onClick ( {gameType = PlayerPlayer,  action = None} )] [text "Player vs. Player"]
+                , button 
+                    [ style "font-size" "12pt" 
+                    , style "margin-left" "50px" 
+                    , onClick ( {gameType = PlayerComputer,  action = None})] [text "Player vs. Computer"]
+                ]
+            , div (showNewGameButtons state) 
+                [ button 
+                    [ style "font-size" "12pt" 
+                    , onClick ( {gameType = Nil,  action = None} )] [text "Nawe game!"]
+                ]
             ]
         , div []
             [ div Style.boardStyle
