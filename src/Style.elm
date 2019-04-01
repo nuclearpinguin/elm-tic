@@ -4,24 +4,24 @@ import Html             exposing (Attribute)
 import Html.Attributes  exposing (style)
 
 
-boardStyle : List (Attribute a)
-boardStyle = 
+board : List (Attribute a)
+board = 
     [ style "width" "500px"
     , style "display" "table"
     , style "table-layout" "fixed"
     ]   
 
 
-cellStyle : List (Attribute a)
-cellStyle = 
+cell : List (Attribute a)
+cell = 
     [ style "display" "table-cell"
     , style "border" "none"
     , style "text-align" "center"
     ]   
 
     
-btnStyle : List (Attribute a) 
-btnStyle = 
+btn : List (Attribute a) 
+btn = 
     [  style "width" "100px"
     , style "height" "100px"
     , style "margin-bottom" "20px"
@@ -42,3 +42,4 @@ overlay =
     , style "z-index" "2"
     , style "background-color" "rgba(255,255,255,0.8)"
     ]
+    

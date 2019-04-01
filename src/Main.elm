@@ -17,19 +17,14 @@ main =
 
 -- MODEL
 
-type alias Game = 
-    { board  : Board
-    , player : Mark
-    , state : GameState
-    , gameType : GameType
-    }
-
-
-type alias Model = 
+type alias Msg = 
     { gameType : GameType,  action : PlayerAction}
 
 
-updateGame : Model -> Game -> Game
+
+-- UPDATE
+
+updateGame : Msg -> Game -> Game
 updateGame mod g =
     let
         plr = change g.player
@@ -46,7 +41,7 @@ updateGame mod g =
         Nil -> init
 
 
-update : Model -> Game -> Game
+update : Msg -> Game -> Game
 update m g = 
     let
         tmp = (m.gameType, g.state)
@@ -58,31 +53,29 @@ update m g =
         (_, _) -> init
 
 
--- Adjust board style
-checkIfMarked : Mark -> GameState -> List (Attribute Model)
-checkIfMarked m s =
+changeBoardStyle : Mark -> GameState -> List (Attribute Msg)
+changeBoardStyle m s =
     let
         stl = if (m == Empty) 
             then [style "background-color" "#9ACD32"] 
             else [attribute "disabled" ""]
     in
     case s of
-        On -> Style.btnStyle ++ stl
-        _ -> Style.btnStyle ++ stl ++ [attribute "disabled" ""]
+        On -> Style.btn ++ stl
+        _ -> Style.btn ++ stl ++ [attribute "disabled" ""]
 
 
--- Creates a button which handles board markings
-makeBoardButton : GameType -> Mark -> PlayerAction -> GameState -> Html Model
+makeBoardButton : GameType -> Mark -> PlayerAction -> GameState -> Html Msg
 makeBoardButton gt mrk act state =
     let
-        stl = checkIfMarked mrk state
+        stl = changeBoardStyle mrk state
         nm = { gameType = gt,  action = act}
     in
     button (stl ++ [ onClick nm ]) [text (fromMark mrk)]
     
 
-isGameActive : GameState -> List (Attribute a)
-isGameActive s = 
+changeGameStyle : GameState -> List (Attribute a)
+changeGameStyle s = 
     case s of
         On -> [style "display" "none"]
         _ -> [style "display" "block"]
@@ -103,17 +96,17 @@ showNewGameButtons s =
 
 -- VIEW
 
-view : Game -> Html Model
+view : Game -> Html Msg
 view game =
     let 
         brd = game.board
         state = game.state
         mrk = game.player
         gt = game.gameType
-        gameStatus = checkGameString state mrk
+        gameStatus = stateToString state mrk
     in
     div []
-        [ div (Style.overlay ++ isGameActive state)
+        [ div (Style.overlay ++ changeGameStyle state)
             [ p [] [text gameStatus]
             , div (showGameButtons state) 
                 [ button 
@@ -127,24 +120,24 @@ view game =
             , div (showNewGameButtons state) 
                 [ button 
                     [ style "font-size" "12pt" 
-                    , onClick ( {gameType = Nil,  action = None} )] [text "Nawe game!"]
+                    , onClick ( {gameType = Nil,  action = None} )] [text "New game!"]
                 ]
             ]
         , div []
-            [ div Style.boardStyle
+            [ div Style.board
                 [ div [style "display" "table-row"] 
-                    [ div Style.cellStyle 
+                    [ div Style.cell 
                         [ makeBoardButton gt brd.a1 A1 state
                         , makeBoardButton gt brd.a2 A2 state
                         , makeBoardButton gt brd.a3 A3 state
                         ]
 
-                    , div Style.cellStyle 
+                    , div Style.cell 
                         [ makeBoardButton gt brd.b1 B1 state
                         , makeBoardButton gt brd.b2 B2 state
                         , makeBoardButton gt brd.b3 B3 state
                         ]
-                    , div Style.cellStyle 
+                    , div Style.cell 
                         [ makeBoardButton gt brd.c1 C1 state
                         , makeBoardButton gt brd.c2 C2 state
                         , makeBoardButton gt brd.c3 C3 state

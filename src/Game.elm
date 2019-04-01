@@ -27,6 +27,7 @@ type alias Game =
     , gameType : GameType
     }
 
+
 -- String representation of mark
 fromMark : Mark -> String
 fromMark m =
@@ -100,8 +101,8 @@ checkGame brd mrk =
             False -> On
 
 
-checkGameString : GameState -> Mark -> String
-checkGameString s m =
+stateToString : GameState -> Mark -> String
+stateToString s m =
     case s of
         WinX -> "Player X wins!"
         WinO -> "Player O wins!"
