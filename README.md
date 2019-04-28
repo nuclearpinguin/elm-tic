@@ -1,5 +1,5 @@
 # elm-tic
-Tic-Tac-Toe in Elm. Check demo [here](https://flamboyant-dijkstra-9c9353.netlify.com).
+Tic-Tac-Toe in Elm. Check demo [here](https://elm-tick.netlify.com).
 
 ## Development build
 Run this:
